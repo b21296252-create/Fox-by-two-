@@ -18,7 +18,26 @@ img {
   max-width:420px;
   object-fit:contain;
 }
-button {
+
+.avatar {
+  position: relative;
+  width: 90%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.avatar img {
+  display: block;
+  width: 100%;
+  max-width: none;
+}
+
+.avatar img:not(:first-child) {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+  button {
   padding:15px 25px;
   border:0;
   border-radius:12px;
@@ -30,11 +49,19 @@ button {
 </head>
 <body>
 <h1>🦊 Fox by Two</h1>
-  <img src="01_yeux_ouverts.png" alt="Visage complet">
-<img id="fox" src="02_legere_zone_bouche.png"
-     alt="Fox by Two"> 
-  <img id="yeux" src="01_yeux_ouverts.png" alt="Yeux du renard" style="display:none;">
-<p id="etat">Microphone désactivé</p>
+  <div class="avatar">
+  <img src="01_yeux_ouverts.png"
+       alt="Visage complet">
+
+  <img id="fox"
+       src="02_legere_zone_bouche.png"
+       alt="Bouche animée">
+
+  <img id="yeux"
+       src="01_yeux_ouverts.png"
+       alt="Yeux du renard"
+       style="display:none;">
+  </div>
 <button id="start">Activer ma voix</button>
 
 <script>
