@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fox by Two</title>
+<style>
+body {
+  background:#10131b;
+  color:white;
+  font-family:Arial,sans-serif;
+  text-align:center;
+  padding:20px;
+}
+img {
+  width:90%;
+  max-width:420px;
+  object-fit:contain;
+}
+button {
+  padding:15px 25px;
+  border:0;
+  border-radius:12px;
+  background:#167cff;
+  color:white;
+  font-size:18px;
+}
+</style>
+</head>
+<body>
+<h1>🦊 Fox by Two</h1>
+<img id="fox" src="02_legere_zone_bouche.png"
+     alt="Fox by Two">
+<p id="etat">Microphone désactivé</p>
+<button id="start">Activer ma voix</button>
+
+<script>
+const fox = document.getElementById("fox");
+const etat = document.getElementById("etat");
+const images = [
+ "02_legere_zone_bouche.png",
+ "03_ouverte_zone_bouche.png",
+ "04_arrondie_zone_bouche.png"
+];
+
+document.getElementById("start").onclick =
+async function() {
+ try {
+  const stream = await navigator.mediaDevices
+    .getUserMedia({audio:true});
+
+  const ctx = new AudioContext();
+  await ctx.resume();
+  const source = ctx.createMediaStreamSource(stream);
+  const analyser = ctx.createAnalyser();
+  analyser.fftSize = 1024;
+  source.connect(analyser);
+
+  const data = new Uint8Array(analyser.fftSize);
+  etat.textContent = "🎙️ Microphone actif";
+  this.disabled = true;
+
+  function animer() {
+   analyser.getByteTimeDomainData(data);
+   let somme = 0;
+   for (let i=0;i<data.length;i++) {
+    const v = (data[i]-128)/128;
+    somme += v*v;
+   }
+   const volume = Math.sqrt(somme/data.length);
+   let index = 0;
+   if (volume > 0.035) index = 1;
+   if (volume > 0.10) index = 2;
+   const image = images[index];
+   if (fox.getAttribute("src") !== image) {
+    fox.src = image;
+   }
+   requestAnimationFrame(animer);
+  }
+  animer();
+ } catch(e) {
+  etat.textContent =
+   "Microphone inaccessible : " + e.message;
+ }
+};
+</script>
+</body>
+</html>
