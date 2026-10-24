@@ -94,6 +94,31 @@ function placerBouche() {
     `translate(calc(${positionX}px), calc(108% + ${positionY}px)) scale(${taille})`;
 }
 
+const positionSauvee = localStorage.getItem("foxPosition");
+
+if (positionSauvee) {
+  const p = JSON.parse(positionSauvee);
+  positionX = p.x;
+  positionY = p.y;
+  taille = p.taille;
+  placerBouche();
+}
+
+function sauvegarderBouche() {
+  localStorage.setItem("foxPosition", JSON.stringify({
+    x: positionX,
+    y: positionY,
+    taille: taille
+  }));
+}
+  
+fox.addEventListener("pointerup", (e) => {
+  sauvegarderBouche();
+  if (fox.hasPointerCapture(e.pointerId)) {
+    fox.releasePointerCapture(e.pointerId);
+  }
+});
+  
 fox.addEventListener("pointerdown", (e) => {
   fox.setPointerCapture(e.pointerId);
   fox.dataset.x = e.clientX;
