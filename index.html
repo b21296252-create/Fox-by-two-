@@ -60,7 +60,7 @@ async function() {
   const data = new Uint8Array(analyser.fftSize);
   etat.textContent = "🎙️ Microphone actif";
   this.disabled = true;
-
+let volumeLisse = 0;
   function animer() {
    analyser.getByteTimeDomainData(data);
    let somme = 0;
@@ -69,9 +69,10 @@ async function() {
     somme += v*v;
    }
    const volume = Math.sqrt(somme/data.length);
+    volumeLisse = volumeLisse * 0.75 + volume * 0.25;
    let index = 0;
-   if (volume > 0.035) index = 1;
-   if (volume > 0.10) index = 2;
+   if (volumeLisse > 0.035) index = 1;
+   if (volumeLisse > 0.10) index = 2;
    const image = images[index];
    if (fox.getAttribute("src") !== image) {
     fox.src = image;
