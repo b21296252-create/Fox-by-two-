@@ -31,7 +31,8 @@ button {
 <body>
 <h1>🦊 Fox by Two</h1>
 <img id="fox" src="02_legere_zone_bouche.png"
-     alt="Fox by Two">
+     alt="Fox by Two"> 
+  <img id="yeux" src="01_yeux_ouverts.png" alt="Yeux du renard" style="display:none;">
 <p id="etat">Microphone désactivé</p>
 <button id="start">Activer ma voix</button>
 
@@ -44,6 +45,19 @@ const images = [
  "04_arrondie_zone_bouche.png"
 ];
 
+const imagesYeux = [
+  "01_yeux_ouverts.png",
+  "02_alignement_1.png",
+  "03_alignement_2.png",
+  "04_alignement_3.png",
+  "05_yeux_fermes.png",
+  "06_alignement_4.png",
+  "07_alignement_5.png",
+  "08_alignement_6.png",
+  "09_alignement_7.png",
+  "10_yeux_ouverts.png"
+];
+  
 document.getElementById("start").onclick =
 async function() {
  try {
