@@ -38,11 +38,16 @@ img {
   left: 0;
 }
   
+
 #fox {
   clip-path: inset(38% 35% 40% 35%);
   transform: translate(0%, 108%) scale(0.90);
   transform-origin: center center;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
 }
+  
   
 
   
@@ -79,7 +84,35 @@ img {
   
 <script>
 const fox = document.getElementById("fox");
-const etat = document.getElementById("etat");
+
+let positionX = 0;
+let positionY = 0;
+let taille = 0.90;
+
+function placerBouche() {
+  fox.style.transform =
+    `translate(calc(${positionX}px), calc(108% + ${positionY}px)) scale(${taille})`;
+}
+
+fox.addEventListener("pointerdown", (e) => {
+  fox.setPointerCapture(e.pointerId);
+  fox.dataset.x = e.clientX;
+  fox.dataset.y = e.clientY;
+});
+
+fox.addEventListener("pointermove", (e) => {
+  if (!fox.hasPointerCapture(e.pointerId)) return;
+
+  positionX += e.clientX - Number(fox.dataset.x);
+  positionY += e.clientY - Number(fox.dataset.y);
+
+  fox.dataset.x = e.clientX;
+  fox.dataset.y = e.clientY;
+
+  placerBouche();
+});
+  
+  const etat = document.getElementById("etat");
 const images = [
  "02_legere_zone_bouche.png",
  "03_ouverte_zone_bouche.png",
