@@ -58,7 +58,22 @@ const imagesYeux = [
   "10_yeux_ouverts.png"
 ];
   
-document.getElementById("start").onclick =
+const paupieres = "renard_par_deux_paupière_fermee.png";
+  const yeux = document.getElementById("yeux");
+  let clignementEnCours = false;
+
+function cligner() {
+  if (clignementEnCours) return;
+  clignementEnCours = true;
+  yeux.src = paupieres;
+
+  setTimeout(() => {
+    yeux.src = "01_yeux_ouverts.png";
+    clignementEnCours = false;
+  }, 150);
+}
+setInterval(cligner, 4000);  
+  document.getElementById("start").onclick =
 async function() {
  try {
   const stream = await navigator.mediaDevices
